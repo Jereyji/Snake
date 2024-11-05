@@ -14,50 +14,46 @@ class Program
     const int width = 30;
     const int height = 10;
 
+    const char snakeSymbol = 'O';
+    const char appleSymbol = 'O';
+
     static void Main()
     {
-        Queue<(int, int)> startSnakeCoordinates = new Queue<(int, int)>();
-        startSnakeCoordinates.Enqueue((1, 1));
-        startSnakeCoordinates.Enqueue((1, 2));
-        startSnakeCoordinates.Enqueue((1, 3));
+        SnakeMVC.Models.FieldModel field = new(width, height);
+        SnakeMVC.Models.SnakeModel snake = new();
+        SnakeMVC.Models.AppleModel apple = new();
+        apple.PlaceRandomly(width, height, snake.Coordinates);
 
-        Snake snake = new(startSnakeCoordinates);
-        Field field = new(width, height);
+        SnakeMVC.Controller.CommandController controller = new();
+        SnakeMVC.View.DrawView view = new();
 
-        int counter = 0; // temp
-        while (counter < 500)
+        var inputThread = new Thread(() => controller.StartListeningForCommands());
+        inputThread.IsBackground = true;
+        inputThread.Start();
+
+        while (true)
         {
-            snake.Move(GetCommandsFromConsole());
+            var req = controller.GetCurrentDirection();
+            if (req != (0, 0))
+            {
+                snake.Move(req);
+            }
 
-            field.Draw(snake.Coordinates);
+            if (snake.CheckApple(apple.Coordinate)){
+                apple.PlaceRandomly(width, height, snake.Coordinates);
+            }
 
-            Console.Write($"\r{counter++}");
+            field.InitializeGrid();
+            foreach (var segment in snake.Coordinates)
+            {
+                field.Grid[segment.Item2, segment.Item1] = snakeSymbol;
+            }
+
+            field.Grid[apple.Coordinate.Item1, apple.Coordinate.Item2] = appleSymbol;
+
+            view.Draw(field);
+            Console.WriteLine(apple.Coordinate);
             Thread.Sleep(500);
         }
-    }
-
-    private static (int, int) GetCommandsFromConsole()
-    {
-        if (Console.KeyAvailable)
-        {
-            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-            if (keyInfo.Key == ConsoleKey.W)
-            {
-                return (0, -1);
-            }
-            else if (keyInfo.Key == ConsoleKey.S)
-            {
-                return (0, 1);
-            }
-            else if (keyInfo.Key == ConsoleKey.A)
-            {
-                return (-1, 0);
-            }
-            else if (keyInfo.Key == ConsoleKey.D)
-            {
-                return (1, 0);
-            }
-        }
-        return (0, 0);
     }
 }
