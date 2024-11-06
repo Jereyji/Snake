@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/pipebomb/projects/C#/Snake/Snake.csproj": {}
+    "/root/projects/cSharp/Snake/Snake.csproj": {}
   },
   "projects": {
-    "/Users/pipebomb/projects/C#/Snake/Snake.csproj": {
+    "/root/projects/cSharp/Snake/Snake.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/pipebomb/projects/C#/Snake/Snake.csproj",
+        "projectUniqueName": "/root/projects/cSharp/Snake/Snake.csproj",
         "projectName": "Snake",
-        "projectPath": "/Users/pipebomb/projects/C#/Snake/Snake.csproj",
-        "packagesPath": "/Users/pipebomb/.nuget/packages/",
-        "outputPath": "/Users/pipebomb/projects/C#/Snake/obj/",
+        "projectPath": "/root/projects/cSharp/Snake/Snake.csproj",
+        "packagesPath": "/root/.nuget/packages/",
+        "outputPath": "/root/projects/cSharp/Snake/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/pipebomb/.nuget/NuGet/NuGet.Config"
+          "/root/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -32,6 +32,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -53,7 +58,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.100-preview.3.23178.7/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

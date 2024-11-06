@@ -9,51 +9,49 @@ using System.Threading;
 // TODO: счетчик
 // TODO: 
 
-class Program
+namespace SnakeMVC.Main
 {
-    const int width = 30;
-    const int height = 10;
-
-    const char snakeSymbol = 'O';
-    const char appleSymbol = 'O';
-
-    static void Main()
+    class Program
     {
-        SnakeMVC.Models.FieldModel field = new(width, height);
-        SnakeMVC.Models.SnakeModel snake = new();
-        SnakeMVC.Models.AppleModel apple = new();
-        apple.PlaceRandomly(width, height, snake.Coordinates);
-
-        SnakeMVC.Controller.CommandController controller = new();
-        SnakeMVC.View.DrawView view = new();
-
-        var inputThread = new Thread(() => controller.StartListeningForCommands());
-        inputThread.IsBackground = true;
-        inputThread.Start();
-
-        while (true)
+        const int width = 30;
+        const int height = 10;
+        const uint winScore = 100000;
+        static void Main()
         {
-            var req = controller.GetCurrentDirection();
-            if (req != (0, 0))
+            Controller.InputController controller = new();
+            Domain.Game game = new(width, height);
+            View.Field field = new(width, height);
+            View.Result result = new();
+
+            var inputThread = new Thread(() => controller.StartListeningForCommands())
             {
-                snake.Move(req);
-            }
+                IsBackground = true
+            };
 
-            if (snake.CheckApple(apple.Coordinate)){
-                apple.PlaceRandomly(width, height, snake.Coordinates);
-            }
+            inputThread.Start();
 
-            field.InitializeGrid();
-            foreach (var segment in snake.Coordinates)
+            while (!controller.IsEnd)
             {
-                field.Grid[segment.Item2, segment.Item1] = snakeSymbol;
+                if (!game.Step(controller.CurrentDirection))
+                {
+                    break;
+                }
+
+                field.FillGrid(game.Snake.Coordinates, game.Apple.Coordinate);
+                field.Draw(game.InfoScore.Score);
+
+                Thread.Sleep(500);
             }
 
-            field.Grid[apple.Coordinate.Item1, apple.Coordinate.Item2] = appleSymbol;
-
-            view.Draw(field);
-            Console.WriteLine(apple.Coordinate);
-            Thread.Sleep(500);
+            if (game.InfoScore.Score == winScore)
+            {
+                result.Win(game.InfoScore.Score);
+            }
+            else
+            {
+                result.Lose(game.InfoScore.Score);
+            }
         }
     }
 }
+

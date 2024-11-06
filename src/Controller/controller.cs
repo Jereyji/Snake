@@ -2,44 +2,53 @@
 
 namespace SnakeMVC.Controller
 {
-    public class CommandController
+    public class InputController
     {
-        private (int, int) currentDirection = (1, 0);
-
+        private readonly TimeSpan pressInterval = TimeSpan.FromSeconds(0.2);
+        private DateTime lastPressTime = DateTime.Now;
+        public (int, int) CurrentDirection { get; set; }
+        public bool IsEnd { get; set; }
+        public InputController()
+        {
+            CurrentDirection = (1, 0);
+            IsEnd = false;
+        }
         public void StartListeningForCommands()
         {
             while (true)
             {
                 if (Console.KeyAvailable)
                 {
+                    DateTime currentPressTime = DateTime.Now;
+
+                    if (currentPressTime - lastPressTime < pressInterval)
+                    {
+                        continue;
+                    }
+
                     ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                    lastPressTime = currentPressTime;
 
                     switch (keyInfo.Key)
                     {
                         case ConsoleKey.W:
-                            currentDirection = (0, -1);
+                            CurrentDirection = (-1, 0);
                             break;
                         case ConsoleKey.S:
-                            currentDirection = (0, 1);
+                            CurrentDirection = (1, 0);
                             break;
                         case ConsoleKey.A:
-                            currentDirection = (-1, 0);
+                            CurrentDirection = (0, -1);
                             break;
                         case ConsoleKey.D:
-                            currentDirection = (1, 0);
+                            CurrentDirection = (0, 1);
                             break;
                         case ConsoleKey.Q:
-                            Environment.Exit(0);
+                            IsEnd = true;
                             break;
                     }
                 }
-                Thread.Sleep(100);
             }
-        }
-
-        public (int, int) GetCurrentDirection()
-        {
-            return currentDirection;
         }
     }
 }

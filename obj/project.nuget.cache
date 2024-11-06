@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "QPGX6yCkrIe42nV9XLP3hLl8lLOpronvXP6WlzrtkCSLaZOOIs/fbwl5SpPjEqIc2eueNfW8I+XJNYCbryNKPQ==",
+  "dgSpecHash": "fR1Pm77QTxU=",
   "success": true,
-  "projectFilePath": "/Users/pipebomb/projects/C#/Snake/Snake.csproj",
+  "projectFilePath": "/root/projects/cSharp/Snake/Snake.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
