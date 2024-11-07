@@ -1,8 +1,9 @@
+using SnakeMVC.Pkg;
+
 namespace SnakeMVC.Domain
 {
     public class Game
     {
-        const uint addingScore = 500;
         private readonly int width;
         private readonly int height;
         public Models.SnakeModel Snake;
@@ -21,7 +22,12 @@ namespace SnakeMVC.Domain
 
         public bool Step((int, int) direction)
         {
-            if (Snake.CheckNextMove(direction, width, height))
+            if (Snake.CanChangeDirection(direction))
+            {
+                Snake.ChangeDirection(direction);
+            }
+
+            if (Snake.CanMove(width, height))
             {
                 Snake.Move();
             }
@@ -30,13 +36,19 @@ namespace SnakeMVC.Domain
                 return false;
             }
 
-            if (Snake.CheckApple(Apple.Coordinate))
+            if (Snake.HasEatenApple(Apple.Coordinate))
             {
-                InfoScore.Score += addingScore;
+                Snake.Coordinates.Dequeue();
+                InfoScore.Score += Settings.AddingScore;
                 Apple.PlaceRandomly(width, height, Snake.Coordinates);
             }
 
             return true;
+        }
+
+        public bool HasPlayerWon()
+        {
+            return InfoScore.Score >= Settings.WinScore;
         }
     }
 }

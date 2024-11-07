@@ -1,30 +1,28 @@
 
+using SnakeMVC.Pkg;
+
 namespace SnakeMVC.View
 {
     public class Field
     {
-        const char horizontalBorder = '=';
-        const char verticalBorder = '|';
-        const char snakeSymbol = 'O';
-        const char appleSymbol = '@';
-        public int Width { get; }
-        public int Height { get; }
-        public char[,] Grid { get; set; }
+        private readonly int width;
+        private readonly int height;
+        private char[,] grid;
 
         public Field(int width, int height)
         {
-            Width = width;
-            Height = height;
-            Grid = new char[height, width];
+            this.width = width;
+            this.height = height;
+            grid = new char[height, width];
         }
 
         private void ClearGrid()
         {
-            for (int y = 0; y < Height; y++)
+            for (int y = 0; y < height; y++)
             {
-                for (int x = 0; x < Width; x++)
+                for (int x = 0; x < width; x++)
                 {
-                    Grid[y, x] = ' ';
+                    grid[y, x] = ' ';
                 }
             }
         }
@@ -35,32 +33,32 @@ namespace SnakeMVC.View
 
             foreach (var segment in snakeCoordinates)
             {
-                Grid[segment.Item1, segment.Item2] = snakeSymbol;
+                grid[segment.Item1, segment.Item2] = Settings.SnakeSymbol;
             }
 
-            Grid[appleCoordinate.Item1, appleCoordinate.Item2] = appleSymbol;
+            grid[appleCoordinate.Item1, appleCoordinate.Item2] = Settings.AppleSymbol;
         }
 
         public void Draw(uint score)
         {
             Console.Clear();
-            Console.WriteLine(new string(horizontalBorder, Width + 2));
+            Console.WriteLine(new string(Settings.HorizontalBorder, width + 2));
             Console.WriteLine($"SCORE: {score}");
-            Console.WriteLine(new string(horizontalBorder, Width + 2));
+            Console.WriteLine(new string(Settings.HorizontalBorder, width + 2));
 
-            for (int y = 0; y < Height; y++)
+            for (int y = 0; y < height; y++)
             {
-                Console.Write(verticalBorder);
+                Console.Write(Settings.VerticalBorder);
                 
-                for (int x = 0; x < Width; x++)
+                for (int x = 0; x < width; x++)
                 {
-                    Console.Write(Grid[y, x]);
+                    Console.Write(grid[y, x]);
                 }
 
-                Console.WriteLine(verticalBorder);
+                Console.WriteLine(Settings.VerticalBorder);
             }
 
-            Console.WriteLine(new string(horizontalBorder, Width + 2));
+            Console.WriteLine(new string(Settings.HorizontalBorder, width + 2));
         }
     }
 }

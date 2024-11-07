@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using SnakeMVC.Pkg;
 
 namespace SnakeMVC.Models
 {
     public class SnakeModel
     {
-        public Queue<(int, int)> Coordinates { get; }
-        private (int, int) direction;
+        public Queue<(int, int)> Coordinates;
+        private (int, int) _direction = Settings.MoveDown;
 
         public SnakeModel()
         {
@@ -14,45 +15,38 @@ namespace SnakeMVC.Models
             Coordinates.Enqueue((1, 1));
             Coordinates.Enqueue((2, 1));
             Coordinates.Enqueue((3, 1));
-            direction = (1, 0);
         }
 
-        public bool CheckNextMove((int, int) nextMove, int width, int height)
+        public bool CanChangeDirection((int, int) newDirection)
         {
-            if (direction.Item1 == 0 && nextMove.Item1 != 0 || direction.Item2 == 0 && nextMove.Item2 != 0)
+            return _direction.Item1 != -newDirection.Item1 || _direction.Item2 != -newDirection.Item2;
+        }
+
+        public void ChangeDirection((int, int) newDirection)
+        {
+            if (CanChangeDirection(newDirection))
             {
-                direction = nextMove;
+                _direction = newDirection;
             }
+        }
 
-            int nextY = Coordinates.Last().Item1 + direction.Item1;
-            int nextX = Coordinates.Last().Item2 + direction.Item2;
+        public bool CanMove(int width, int height)
+        {
+            var nextY = Coordinates.Last().Item1 + _direction.Item1;
+            var nextX = Coordinates.Last().Item2 + _direction.Item2;
 
-            if (Coordinates.Contains((nextY, nextX)) ||
-                nextX == -1 || nextX == width ||
-                nextY == -1 || nextY == height)
-            {
-                return false;
-            }
-
-            return true;
+            return !(Coordinates.Contains((nextY, nextX)) || nextX < 0 || nextX >= width || nextY < 0 || nextY >= height);
         }
 
         public void Move()
         {
-            Coordinates.Enqueue((Coordinates.Last().Item1 + direction.Item1, Coordinates.Last().Item2 + direction.Item2));
+            var newHead = (Coordinates.Last().Item1 + _direction.Item1, Coordinates.Last().Item2 + _direction.Item2);
+            Coordinates.Enqueue(newHead);
         }
 
-        public bool CheckApple((int, int) appleCoordinate)
+        public bool HasEatenApple((int, int) appleCoordinate)
         {
-            if (Coordinates.Last() == appleCoordinate)
-            {
-                return true;
-            }
-            else
-            {
-                Coordinates.Dequeue();
-                return false;
-            }
+            return Coordinates.Last() == appleCoordinate;
         }
     }
 }

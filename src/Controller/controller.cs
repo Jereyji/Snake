@@ -1,12 +1,14 @@
 
 
+using SnakeMVC.Pkg;
+
 namespace SnakeMVC.Controller
 {
     public class InputController
     {
         private readonly TimeSpan pressInterval = TimeSpan.FromSeconds(0.2);
         private DateTime lastPressTime = DateTime.Now;
-        public (int, int) CurrentDirection { get; set; } = (1, 0);
+        public (int, int) CurrentDirection { get; set; } = Settings.MoveDown;
         public bool IsEnd { get; set; } = false;
         public void StartListeningForCommands()
         {
@@ -26,16 +28,16 @@ namespace SnakeMVC.Controller
                     switch (keyInfo.Key)
                     {
                         case ConsoleKey.W:
-                            CurrentDirection = (-1, 0);
+                            CurrentDirection =  Settings.MoveUp;
                             break;
                         case ConsoleKey.S:
-                            CurrentDirection = (1, 0);
+                            CurrentDirection =  Settings.MoveDown;
                             break;
                         case ConsoleKey.A:
-                            CurrentDirection = (0, -1);
+                            CurrentDirection =  Settings.MoveLeft;
                             break;
                         case ConsoleKey.D:
-                            CurrentDirection = (0, 1);
+                            CurrentDirection =  Settings.MoveUp;
                             break;
                         case ConsoleKey.Q:
                             IsEnd = true;
