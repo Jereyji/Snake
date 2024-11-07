@@ -37,7 +37,7 @@ namespace SnakeMVC.Controller
                             CurrentDirection =  Settings.MoveLeft;
                             break;
                         case ConsoleKey.D:
-                            CurrentDirection =  Settings.MoveUp;
+                            CurrentDirection =  Settings.MoveRight;
                             break;
                         case ConsoleKey.Q:
                             IsEnd = true;

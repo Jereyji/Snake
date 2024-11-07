@@ -22,10 +22,7 @@ namespace SnakeMVC.Domain
 
         public bool Step((int, int) direction)
         {
-            if (Snake.CanChangeDirection(direction))
-            {
-                Snake.ChangeDirection(direction);
-            }
+            Snake.ChangeDirection(direction);
 
             if (Snake.CanMove(width, height))
             {
@@ -38,9 +35,12 @@ namespace SnakeMVC.Domain
 
             if (Snake.HasEatenApple(Apple.Coordinate))
             {
-                Snake.Coordinates.Dequeue();
                 InfoScore.Score += Settings.AddingScore;
                 Apple.PlaceRandomly(width, height, Snake.Coordinates);
+            }
+            else
+            {
+                Snake.Coordinates.Dequeue();
             }
 
             return true;

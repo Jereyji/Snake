@@ -5,7 +5,7 @@ using SnakeMVC.Pkg;
 namespace SnakeMVC.Main
 {
     class Program
-    {        
+    {
         static void Main()
         {
             Controller.InputController controller = new();
@@ -32,8 +32,6 @@ namespace SnakeMVC.Main
 
                 Thread.Sleep(Settings.Speed);
             }
-
-            inputThread.Join();
 
             if (game.HasPlayerWon())
             {

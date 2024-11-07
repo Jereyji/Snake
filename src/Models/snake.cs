@@ -17,17 +17,18 @@ namespace SnakeMVC.Models
             Coordinates.Enqueue((3, 1));
         }
 
-        public bool CanChangeDirection((int, int) newDirection)
-        {
-            return _direction.Item1 != -newDirection.Item1 || _direction.Item2 != -newDirection.Item2;
-        }
-
         public void ChangeDirection((int, int) newDirection)
         {
             if (CanChangeDirection(newDirection))
             {
                 _direction = newDirection;
             }
+        }
+
+        public void Move()
+        {
+            var newHead = (Coordinates.Last().Item1 + _direction.Item1, Coordinates.Last().Item2 + _direction.Item2);
+            Coordinates.Enqueue(newHead);
         }
 
         public bool CanMove(int width, int height)
@@ -38,15 +39,14 @@ namespace SnakeMVC.Models
             return !(Coordinates.Contains((nextY, nextX)) || nextX < 0 || nextX >= width || nextY < 0 || nextY >= height);
         }
 
-        public void Move()
-        {
-            var newHead = (Coordinates.Last().Item1 + _direction.Item1, Coordinates.Last().Item2 + _direction.Item2);
-            Coordinates.Enqueue(newHead);
-        }
-
         public bool HasEatenApple((int, int) appleCoordinate)
         {
             return Coordinates.Last() == appleCoordinate;
+        }
+
+        private bool CanChangeDirection((int, int) newDirection)
+        {
+            return _direction.Item1 == 0 && newDirection.Item1 != 0 || _direction.Item2 == 0 && newDirection.Item2 != 0;
         }
     }
 }
