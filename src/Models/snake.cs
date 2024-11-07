@@ -6,6 +6,7 @@ namespace SnakeMVC.Models
     public class SnakeModel
     {
         public Queue<(int, int)> Coordinates { get; }
+        private (int, int) direction;
 
         public SnakeModel()
         {
@@ -13,14 +14,20 @@ namespace SnakeMVC.Models
             Coordinates.Enqueue((1, 1));
             Coordinates.Enqueue((2, 1));
             Coordinates.Enqueue((3, 1));
+            direction = (1, 0);
         }
 
         public bool CheckNextMove((int, int) nextMove, int width, int height)
         {
-            int nextY = Coordinates.Last().Item1 + nextMove.Item1;
-            int nextX = Coordinates.Last().Item2 + nextMove.Item2;
+            if (direction.Item1 == 0 && nextMove.Item1 != 0 || direction.Item2 == 0 && nextMove.Item2 != 0)
+            {
+                direction = nextMove;
+            }
 
-            if (Coordinates.Contains((nextX, nextY)) ||
+            int nextY = Coordinates.Last().Item1 + direction.Item1;
+            int nextX = Coordinates.Last().Item2 + direction.Item2;
+
+            if (Coordinates.Contains((nextY, nextX)) ||
                 nextX == -1 || nextX == width ||
                 nextY == -1 || nextY == height)
             {
@@ -30,9 +37,9 @@ namespace SnakeMVC.Models
             return true;
         }
 
-        public void Move((int, int) nextMove)
+        public void Move()
         {
-            Coordinates.Enqueue((Coordinates.Last().Item1 + nextMove.Item1, Coordinates.Last().Item2 + nextMove.Item2));
+            Coordinates.Enqueue((Coordinates.Last().Item1 + direction.Item1, Coordinates.Last().Item2 + direction.Item2));
         }
 
         public bool CheckApple((int, int) appleCoordinate)
@@ -47,13 +54,5 @@ namespace SnakeMVC.Models
                 return false;
             }
         }
-
-        // private void CheckDirection((int, int) nextMove)
-        // {
-        //     if (CurrentDirection.Item1 == 0 && nextMove.Item1 != 0 || CurrentDirection.Item2 == 0 && nextMove.Item2 != 0)
-        //     {
-        //         CurrentDirection = nextMove;
-        //     }
-        // }
     }
 }

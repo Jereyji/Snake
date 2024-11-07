@@ -1,21 +1,13 @@
 using System;
 using System.Threading;
 
-// NEED: realize MVC, visitor
-// TODO: отрисовка поля
-// TODO: считывание команд (w,a,s,d,q)
-// TODO: рандомизация появления бонуса, если отсутствует на поле
-// TODO: поедание бонуса -> увеличение змеи
-// TODO: счетчик
-// TODO: 
-
 namespace SnakeMVC.Main
 {
     class Program
     {
         const int width = 30;
         const int height = 10;
-        const uint winScore = 100000;
+        const uint winScore = width * height * 500;
         static void Main()
         {
             Controller.InputController controller = new();
@@ -23,7 +15,7 @@ namespace SnakeMVC.Main
             View.Field field = new(width, height);
             View.Result result = new();
 
-            var inputThread = new Thread(() => controller.StartListeningForCommands())
+            var inputThread = new Thread(controller.StartListeningForCommands)
             {
                 IsBackground = true
             };
@@ -40,7 +32,7 @@ namespace SnakeMVC.Main
                 field.FillGrid(game.Snake.Coordinates, game.Apple.Coordinate);
                 field.Draw(game.InfoScore.Score);
 
-                Thread.Sleep(500);
+                Thread.Sleep(450);
             }
 
             if (game.InfoScore.Score == winScore)

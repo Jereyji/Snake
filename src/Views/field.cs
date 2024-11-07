@@ -7,7 +7,6 @@ namespace SnakeMVC.View
         const char verticalBorder = '|';
         const char snakeSymbol = 'O';
         const char appleSymbol = '@';
-
         public int Width { get; }
         public int Height { get; }
         public char[,] Grid { get; set; }

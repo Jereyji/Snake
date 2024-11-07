@@ -6,13 +6,8 @@ namespace SnakeMVC.Controller
     {
         private readonly TimeSpan pressInterval = TimeSpan.FromSeconds(0.2);
         private DateTime lastPressTime = DateTime.Now;
-        public (int, int) CurrentDirection { get; set; }
-        public bool IsEnd { get; set; }
-        public InputController()
-        {
-            CurrentDirection = (1, 0);
-            IsEnd = false;
-        }
+        public (int, int) CurrentDirection { get; set; } = (1, 0);
+        public bool IsEnd { get; set; } = false;
         public void StartListeningForCommands()
         {
             while (true)
@@ -20,7 +15,6 @@ namespace SnakeMVC.Controller
                 if (Console.KeyAvailable)
                 {
                     DateTime currentPressTime = DateTime.Now;
-
                     if (currentPressTime - lastPressTime < pressInterval)
                     {
                         continue;

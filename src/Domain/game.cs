@@ -23,7 +23,7 @@ namespace SnakeMVC.Domain
         {
             if (Snake.CheckNextMove(direction, width, height))
             {
-                Snake.Move(direction);
+                Snake.Move();
             }
             else
             {
